@@ -5,6 +5,6 @@ class UserSerializer(serializers.ModelSerializer) :
     password = serializers.CharField(write_only=True)  # Allow password input but not output
     class Meta:
         model = User
-        fields = ['id', 'user_name', 'first_name', 'last_name', 'email', 'password']  # Include only necessary fields
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password']  # Include only necessary fields
 
 
