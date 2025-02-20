@@ -8,10 +8,10 @@ from .views import (
 )
 
 urlpatterns = [
-    path('posts/', PostListCreateView.as_view(), name='post-list-create'),
-    path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('posts/<int:post_ID>/like/', GetLikeByPostIDAPIView.as_view(), name='like-post'),
-    path('posts/<int:post_ID>/comment/', GetCommentByIDAPIView.as_view(), name='comment-post'),
-    path('posts/<int:post_ID>/comments/', GetPostCommentsAPIView.as_view(), name='post-comments'),
+    path('', PostListCreateView.as_view(), name='post-list-create'),
+    path('<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('<int:post_ID>/like/', GetLikeByPostIDAPIView.as_view(), name='like-post'),
+    path('<int:post_ID>/comment/', GetCommentByIDAPIView.as_view(), name='comment-post'),
+    path('<int:post_ID>/comments/', GetPostCommentsAPIView.as_view(), name='post-comments'),
 ]
  

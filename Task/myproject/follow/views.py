@@ -7,6 +7,7 @@ from .models import *
 from .serializer import *
 
 class GetFollowbyIDAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -24,6 +25,7 @@ class GetFollowbyIDAPIView(APIView):
 
 
 class GetFollowersAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, User_ID=None):
         user = User.objects.get(pk=User_ID)
         if User_ID is not None:
@@ -36,6 +38,7 @@ class GetFollowersAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 class GetFollowingAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, User_ID=None):
         user = User.objects.get(pk=User_ID) 
         if User_ID is not None:

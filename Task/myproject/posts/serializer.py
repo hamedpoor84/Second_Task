@@ -1,27 +1,26 @@
 from rest_framework import serializers
 from .models import *
 
-class PostSerializer(serializers.ModelSerializer) :
-    user = serializers.ReadOnlyField(source='user.username')
+class PostSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')  # User should be read-only
+    like_count = serializers.IntegerField(read_only=True)  # Prevent users from setting like count
+    comment_count = serializers.IntegerField(read_only=True)  # Prevent users from setting comment count
+
     class Meta:
         model = Post
-        fields = '__all__'
-        read_only_fields = ['id' , 'titile' , 'created_at' , 'user', 'comment_count', 'like_count']
+        fields = ['id', 'title', 'description', 'image', 'created_at', 'user', 'like_count', 'comment_count']
 
 class LikeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     class Meta:
         model = Like
         fields = "__all__"
-        read_only_fields = ['id' , 'post' , 'created_at' , 'user']
-
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')    
     class Meta:
         model = Comment
         fields = "__all__"
-        read_only_fields = ['id' , 'content' , 'post' , 'created_at' , 'user']
         
 
 

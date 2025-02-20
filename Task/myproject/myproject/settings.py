@@ -43,15 +43,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     'users',  # Custom apps
     'posts',
     'massagigng',
     'follow',
     'moderation',
+
     'rest_framework',
+    'drf_yasg',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
 ]
-INSTALLED_APPS += ['rest_framework_simplejwt']
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -137,9 +140,27 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,  # Automatically refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist old refresh tokens
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,  # Uses Django's secret key
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Enforces "Bearer <token>" format
 }
 
-# Static files (CSS, JavaScript, Images)
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {  # This enables JWT authentication in Swagger
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Enter: Bearer <JWT token>'
+        }
+    },
+    'USE_SESSION_AUTH': False,  # Disables Django admin-style login in Swagger
+}
+
+
+# Static files (CSS, JavaScript, Images)p
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
