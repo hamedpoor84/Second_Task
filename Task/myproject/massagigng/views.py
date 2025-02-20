@@ -6,10 +6,15 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from .models import Converstation, Message
 from .serializer import MessageSerializer, ConversationSerializer
+from drf_yasg.utils import swagger_auto_schema
 
 class CreateConversationAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
+    @swagger_auto_schema(
+        operation_description="Update a post (only if the user is the owner)",
+        request_body=ConversationSerializer,
+        responses={200: ConversationSerializer(), 403: "Permission denied", 404: "Not found"}
+    )
     def post(self, request):
         participants_usernames = request.data.get('participants', [])
         participants = User.objects.filter(username__in=participants_usernames)
@@ -28,6 +33,11 @@ class CreateConversationAPIView(APIView):
 class SendMessageAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_description="Update a post (only if the user is the owner)",
+        request_body=MessageSerializer,
+        responses={200: MessageSerializer(), 403: "Permission denied", 404: "Not found"}
+    )
     def post(self, request, conversation_id):
         conversation = get_object_or_404(Converstation, id=conversation_id)
 
@@ -51,6 +61,11 @@ class SendMessageAPIView(APIView):
 
 class GetConversationMessagesAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_description="Retrieve a specific post by ID",
+        responses={200: MessageSerializer(), 404: "Not found"}
+    )
     def get(self, request, conversation_id):
         conversation = get_object_or_404(Converstation, id=conversation_id)
 
@@ -63,7 +78,11 @@ class GetConversationMessagesAPIView(APIView):
 
 class GetConversationsAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
+    @swagger_auto_schema(
+        operation_description="Retrieve a specific post by ID",
+        responses={200: ConversationSerializer(), 404: "Not found"}
+    )
     def get(self, request):
         conversations = Converstation.objects.filter(participants=request.user)
         serializer = ConversationSerializer(conversations, many=True)

@@ -12,15 +12,19 @@ class PostSerializer(serializers.ModelSerializer):
 
 class LikeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    created_at = serializers.ReadOnlyField()
+    post = serializers.PrimaryKeyRelatedField(read_only=True, source='post.title')  
     class Meta:
         model = Like
         fields = "__all__"
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')    
+    user = serializers.ReadOnlyField(source='user.username')
+    created_at = serializers.ReadOnlyField()
+    post = serializers.PrimaryKeyRelatedField(read_only=True, source='post.title')  
+
     class Meta:
         model = Comment
         fields = "__all__"
-        
 
 

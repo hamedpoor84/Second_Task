@@ -63,7 +63,7 @@ class PostDetailView(APIView):
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         
         if post.user == request.user:
-            serializer = PostSerializer(post , data = request.data)
+            serializer = PostSerializer(post , data = request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -134,8 +134,8 @@ class GetCommentByIDAPIView(APIView):
         operation_description="Delete a comment (only if the user is the owner)",
         responses={204: "Comment deleted", 404: "Not found"}
     )
-    def delete(self, request, comment_id):
-        comment = get_object_or_404(Comment, id=comment_id, user=request.user)  # Ensure user owns the comment
+    def delete(self, request, comment_ID):
+        comment = get_object_or_404(Comment, id=comment_ID, user=request.user)  # Ensure user owns the comment
         post = comment.post 
         post.comment_count = post.comment_count - 1
         post.save()
