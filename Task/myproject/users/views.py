@@ -23,7 +23,7 @@ class GetUSerByIDAPIView(APIView):
         responses={200: UserSerializer(many=True)}
     )
     def get(self, request, User_ID=None):
-        user = User.objects.get(pk=User_ID) 
+        user = self.get_object(pk=User_ID) 
         if User_ID is None :
             user = request.user
             serializer = UserSerializer(user)
@@ -53,4 +53,7 @@ class CreateUSerAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+ 
+
 
